@@ -4,10 +4,22 @@ Este proyecto esta elaborado con las tecnologias de vue y element plus.
 
 ## Comandos
 
-Para correr el proyecto ejecutar el siguiente comando
+Para instalar las dependencias del proyecto ejecutar el siguiente comando
+
+```bash
+  npm install
+```
+
+Para construir el proyecto ejecutar el siguiente comando
 
 ```bash
   npm run build
+```
+
+Para visualizar el proyecto ejecutar el siguiente comando
+
+```bash
+  npm run preview
 ```
 
 ## Autor

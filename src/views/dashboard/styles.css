@@ -1,0 +1,14 @@
+.container {
+  flex-grow: 1;
+  background-color: white;
+}
+.aside {
+  background-color: aliceblue;
+}
+.header {
+  align-content: center;
+  background-color: violet;
+}
+.content {
+  background-color: rgb(149, 152, 154);
+}
