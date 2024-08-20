@@ -2,7 +2,43 @@
 import { ref } from "vue";
 import "./styles.css";
 import { Management } from "@element-plus/icons-vue";
+import baseUrl from "../../api/api";
 const isMenuOpen = ref(false);
+
+const users = ref();
+const contacts = ref();
+
+const getUsers = async () => {
+  try {
+    const resp = await fetch(baseUrl + "/user", {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    });
+    const data = await resp.json();
+    users.value = data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+const getContacts = async () => {
+  try {
+    const resp = await fetch(baseUrl + "/contact", {
+      method: "GET",
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    });
+    const data = await resp.json();
+    contacts.value = data;
+    console.log(contacts.value);
+  } catch (error) {
+    console.error(error);
+  }
+};
+getContacts();
+getUsers();
 </script>
 <template>
   <el-container class="container">
@@ -38,12 +74,12 @@ const isMenuOpen = ref(false);
       ></el-header>
       <el-main class="content">
         <el-table
-          :data="tableData"
+          :data="users"
           style="width: 100%"
         >
           <el-table-column
             fixed
-            prop="username"
+            prop="userName"
             label="Nombre de usuario"
             width="180"
           />
@@ -53,13 +89,13 @@ const isMenuOpen = ref(false);
             width="180"
           />
           <el-table-column
-            prop="date"
+            prop="registerDate"
             label="Fecha de registro"
             width="180"
           />
           <el-table-column
             fixed="right"
-            label="Operations"
+            label="Acciones"
             min-width="150"
           >
             <template #default>
