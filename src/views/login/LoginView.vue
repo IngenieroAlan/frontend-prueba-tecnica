@@ -1,9 +1,12 @@
 <script setup>
-import { reactive } from "vue";
+import { reactive, ref } from "vue";
 import { ElButton, ElContainer } from "element-plus";
 import router from "../../router";
 import "./styles.css";
-//localStorage.setItem('token','JWT hola')
+import baseUrl from "../../api/api";
+
+const errorMessage = ref(""); //TODO: add validations
+
 if (localStorage.getItem("token")) {
   router.replace("/home");
 }
@@ -11,8 +14,30 @@ const form = reactive({
   username: "",
   email: "",
 });
-const onSubmit = () => {
-  //logica del login
+
+const onSubmit = async () => {
+  try {
+    const resp = await fetch(baseUrl + "/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: form.username,
+        email: form.email,
+      }),
+    });
+    const data = await resp.json();
+    console.log(data);
+    if (data.isSuccess) {
+      localStorage.setItem("token", data.token);
+      router.replace("/home");
+    } else {
+      errorMessage.value = "Error, las credenciales son incorrectas";
+    }
+  } catch (error) {
+    console.log(error);
+  }
 };
 </script>
 <template>
@@ -37,11 +62,6 @@ const onSubmit = () => {
               message: 'El campo del nombre de usuario no puede estar vacio',
               trigger: 'blur',
             },
-            {
-              type: 'username',
-              message: 'Por favor ingrese un nombre de usuario valido',
-              trigger: ['blur', 'change'],
-            },
           ]"
         >
           <el-input v-model="form.username" />
@@ -58,7 +78,7 @@ const onSubmit = () => {
             {
               type: 'email',
               message: 'Por favor ingrese un correo electronico valido',
-              trigger: ['blur', 'change'],
+              trigger: 'blur',
             },
           ]"
         >
