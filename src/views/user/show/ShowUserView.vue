@@ -106,12 +106,12 @@ const goBack = async () => {
           min-width="60"
         />
         <el-table-column
-          prop="phone"
+          prop="phoneNumber"
           label="Telefono"
           min-width="60"
         />
         <el-table-column
-          prop="adress"
+          prop="address"
           label="Referencia"
           min-width="60"
         />
