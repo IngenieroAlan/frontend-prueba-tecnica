@@ -1,3 +1,8 @@
 .table {
   width: 100%;
 }
+.header {
+  text-align: left;
+  align-content: center;
+  background-color: #d2f4fd;
+}

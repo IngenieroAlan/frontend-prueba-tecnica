@@ -3,26 +3,33 @@ import { ref } from "vue";
 import baseUrl from "../../../api/api";
 import UserInfoCard from "../../../components/UserInfoCard.vue";
 import { useRoute } from "vue-router";
+import router from "../../../router";
+import "./styles.css";
 
 const route = useRoute();
 
 const contacts = ref();
 const user = ref();
+const isLoading = ref(true);
+
 const getContacts = async (id) => {
-  //TODO:Ruta para obtener los contactos dependiendo del id del usuario
+  isLoading.value = true;
   try {
-    const resp = await fetch(baseUrl + `/contact/user/${id}`, {
+    const resp = await fetch(baseUrl + `/Contact/user/${id}`, {
       method: "GET",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
       },
     });
     const data = await resp.json();
+    console.log(data);
     if (data.isSuccess) {
-      contacts.value = data;
+      contacts.value = data.data;
       console.log(contacts.value);
+      isLoading.value = false;
     }
   } catch (error) {
+    isLoading.value = false;
     console.error(error);
   }
 };
@@ -45,24 +52,48 @@ const getUser = async (id) => {
 };
 getContacts(route.params.id);
 getUser(route.params.id);
-console.log(user);
-const handleDetails = (userId) => {
-  //router.push(`/user/${userId}`);
-  console.log(userId);
+const handleDelete = async (userId) => {
+  isLoading.value = true;
+  try {
+    await fetch(baseUrl + `/Contact/${userId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: "Bearer " + localStorage.getItem("token"),
+      },
+    });
+    getContacts(route.params.id);
+    setTimeout(() => (isLoading.value = false), 1400);
+  } catch (error) {
+    isLoading.value = false;
+    console.error(error);
+  }
 };
 const handleEdit = (userId) => {
   console.log(userId);
 };
+const handleAdd = async () => {
+  router.replace("/contact/add");
+};
+const goBack = async () => {
+  router.replace("/home");
+};
 </script>
 <template>
   <el-container class="container">
-    <el-header class="header"></el-header>
+    <el-header class="header">
+      <el-button
+        link
+        @click="goBack"
+        ><el-icon size="38px"><Back /> </el-icon
+      ></el-button>
+    </el-header>
     <el-main class="content">
       <UserInfoCard :user="user" />
       <el-table
         :data="contacts"
         class="table"
         empty-text="El usuario no tiene contactos"
+        v-loading="isLoading"
       >
         <el-table-column
           fixed
@@ -81,7 +112,7 @@ const handleEdit = (userId) => {
           min-width="60"
         />
         <el-table-column
-          prop="phone"
+          prop="adress"
           label="Referencia"
           min-width="60"
         />
@@ -95,17 +126,17 @@ const handleEdit = (userId) => {
               link
               type="primary"
               size="small"
-              @click="handleDetails(row.id)"
+              @click="handleEdit(row.id)"
+              >Edit</el-button
             >
-              Detalles
-            </el-button>
             <el-button
               link
               type="danger"
               size="small"
-              @click="handleEdit(row.id)"
-              >Edit</el-button
+              @click="handleDelete(row.id)"
             >
+              Delete
+            </el-button>
           </template>
         </el-table-column>
       </el-table>

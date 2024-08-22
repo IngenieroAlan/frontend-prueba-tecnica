@@ -5,9 +5,9 @@ import baseUrl from "../../api/api";
 import router from "../../router";
 
 const users = ref();
-const isloading = ref(true);
+const isLoading = ref(true);
 onMounted(() => {
-  isloading.value = true;
+  isLoading.value = true;
 });
 
 const getUsers = async () => {
@@ -21,7 +21,7 @@ const getUsers = async () => {
     const data = await resp.json();
     if (data) {
       users.value = data;
-      setTimeout(() => (isloading.value = false), 1400);
+      setTimeout(() => (isLoading.value = false), 1400);
     }
   } catch (error) {
     console.error(error);
@@ -34,7 +34,7 @@ const handleEdit = (userId) => {
   console.log(userId);
 };
 const handleDelete = async (userId) => {
-  isloading.value = true;
+  isLoading.value = true;
   try {
     await fetch(baseUrl + `/user/${userId}`, {
       method: "DELETE",
@@ -43,9 +43,9 @@ const handleDelete = async (userId) => {
       },
     });
     getUsers();
-    setTimeout(() => (isloading.value = false), 1400);
+    setTimeout(() => (isLoading.value = false), 1400);
   } catch (error) {
-    isloading.value = false;
+    isLoading.value = false;
 
     console.error(error);
   }
@@ -74,7 +74,7 @@ getUsers();
       <el-table
         :data="users"
         style="width: 100%"
-        v-loading="isloading"
+        v-loading="isLoading"
         empty-text="No hay usuarios para mostrar"
       >
         <el-table-column
