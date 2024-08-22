@@ -86,7 +86,7 @@ const contact = ref({
   phoneNumber: "",
   address: "",
 });
-const userId = ref(route.params.userId); // Obtén userId desde los parámetros de la ruta
+const userId = ref(route.params.userId);
 
 const rules = {
   name: [
@@ -120,7 +120,7 @@ const getContact = async (id) => {
       const data = await resp.json();
       if (resp.ok) {
         contact.value = data;
-        userId.value = data.userId; // Establecer userId desde el contacto
+        userId.value = data.userId;
       } else {
         throw new Error(
           data.message || "Error al cargar los datos del contacto"
