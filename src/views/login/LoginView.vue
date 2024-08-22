@@ -42,7 +42,7 @@ const onSubmit = async () => {
 <template>
   <el-container class="login-container">
     <el-main class="login-main">
-      <Card class="login-card">
+      <el-card class="login-card">
         <el-icon
           size="50px"
           class="login-avatar"
@@ -94,7 +94,7 @@ const onSubmit = async () => {
             </el-button>
           </el-form-item>
         </el-form>
-      </Card>
+      </el-card>
     </el-main>
   </el-container>
 </template>
