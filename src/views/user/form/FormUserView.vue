@@ -96,7 +96,7 @@ const submit = () => {
     if (valid) {
       try {
         if (isEditMode.value) {
-          // Actualizar usuario existente
+          // Actualizar usuario
           await fetch(baseUrl + `/user/${route.params.id}`, {
             method: "PUT",
             headers: {
