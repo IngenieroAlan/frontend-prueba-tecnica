@@ -2,13 +2,16 @@
   flex-grow: 1;
   background-color: white;
 }
-.aside {
-  background-color: aliceblue;
-}
 .header {
+  justify-content: flex-end;
+  text-align: end;
   align-content: center;
-  background-color: violet;
+  background-color: #d2f4fd;
 }
 .content {
   background-color: #dbdbdb;
+}
+.btnAddUser {
+  border-radius: 0;
+  border-width: 0;
 }

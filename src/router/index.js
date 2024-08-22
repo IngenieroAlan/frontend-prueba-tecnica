@@ -5,10 +5,10 @@ import UserView from "../views/user/show/ShowUserView.vue";
 import AddUserView from "../views/user/add/AddUserView.vue";
 
 const routes = [
-  { path: "/", component: LoginView },
-  { path: "/home", component: DashboardView },
-  { path: "/user/:id", component: UserView },
-  { path: "/user/add", component: AddUserView },
+  { path: "/", name: "login", component: LoginView },
+  { path: "/home", name: "home", component: DashboardView },
+  { path: "/user/:id", name: "userDetails", component: UserView, props: true },
+  { path: "/user/add", name: "addUser", component: AddUserView },
 ];
 
 const router = createRouter({

@@ -28,7 +28,7 @@ const getUsers = async () => {
   }
 };
 const handleDetails = (userId) => {
-  router.push(`/user/${userId}`);
+  router.replace(`/user/${userId}`);
 };
 const handleEdit = (userId) => {
   console.log(userId);
@@ -51,13 +51,25 @@ const handleDelete = async (userId) => {
   }
 };
 const handleAdd = async () => {
-  router.push("/user/add");
+  router.replace("/user/add");
+};
+const handleLogout = () => {
+  localStorage.clear();
+  router.replace("/");
 };
 getUsers();
 </script>
 <template>
   <el-container class="container">
-    <el-header class="header"></el-header>
+    <el-header class="header">
+      <el-button
+        link
+        style="margin-right: 4px"
+        @click="handleLogout"
+      >
+        Cerrar sesión
+      </el-button>
+    </el-header>
     <el-main class="content">
       <el-table
         :data="users"
@@ -97,10 +109,10 @@ getUsers();
             </el-button>
             <el-button
               link
-              type="danger"
+              type="primary"
               size="small"
               @click="handleEdit(row.id)"
-              >Edit</el-button
+              >Editar</el-button
             >
             <el-button
               link
@@ -114,6 +126,7 @@ getUsers();
       </el-table>
       <el-button
         style="width: 100%"
+        class="btnAddUser"
         @click="handleAdd"
       >
         Agregar usuario
