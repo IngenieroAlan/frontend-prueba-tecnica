@@ -71,66 +71,69 @@ onMounted(() => {
       </el-button>
     </el-header>
     <el-main class="content">
-      <el-table
-        :data="users"
-        style="width: 100%"
-        v-loading="isLoading"
-        empty-text="No hay usuarios para mostrar"
-      >
-        <el-table-column
-          fixed
-          prop="userName"
-          label="Nombre de usuario"
-          min-width="80"
-        />
-        <el-table-column
-          prop="email"
-          label="Correo electronico"
-          min-width="80"
-        />
-        <el-table-column
-          prop="registerDate"
-          label="Fecha de registro"
-          min-width="80"
-        />
-        <el-table-column
-          fixed="right"
-          label="Acciones"
-          min-width="120"
+      <el-card>
+        <h1 style="color: #000000c0">Usuarios</h1>
+        <el-table
+          :data="users"
+          style="width: 100%"
+          v-loading="isLoading"
+          empty-text="No hay usuarios para mostrar"
         >
-          <template #default="{ row }">
-            <el-button
-              link
-              type="primary"
-              size="small"
-              @click="handleDetails(row.id)"
-            >
-              Detalles
-            </el-button>
-            <el-button
-              link
-              type="primary"
-              size="small"
-              @click="handleEdit(row.id)"
-              >Editar</el-button
-            >
-            <el-button
-              link
-              type="danger"
-              size="small"
-              @click="handleDelete(row.id)"
-              >Eliminar</el-button
-            >
-          </template>
-        </el-table-column>
-      </el-table>
-      <el-button
-        style="width: 100%"
-        class="btnAddUser"
-        @click="handleAdd"
-      >
-        Agregar usuario
-      </el-button>
+          <el-table-column
+            fixed
+            prop="userName"
+            label="Nombre de usuario"
+            min-width="80"
+          />
+          <el-table-column
+            prop="email"
+            label="Correo electrónico"
+            min-width="80"
+          />
+          <el-table-column
+            prop="registerDate"
+            label="Fecha de registro"
+            min-width="80"
+          />
+          <el-table-column
+            fixed="right"
+            label="Acciones"
+            min-width="120"
+          >
+            <template #default="{ row }">
+              <el-button
+                link
+                type="primary"
+                size="small"
+                @click="handleDetails(row.id)"
+              >
+                Detalles
+              </el-button>
+              <el-button
+                link
+                type="primary"
+                size="small"
+                @click="handleEdit(row.id)"
+                >Editar</el-button
+              >
+              <el-button
+                link
+                type="danger"
+                size="small"
+                @click="handleDelete(row.id)"
+                >Eliminar</el-button
+              >
+            </template>
+          </el-table-column>
+        </el-table>
+        <el-button
+          style="width: 100%"
+          class="btnAddUser"
+          @click="handleAdd"
+        >
+          Agregar usuario
+        </el-button>
+      </el-card>
     </el-main>
   </el-container>
 </template>
