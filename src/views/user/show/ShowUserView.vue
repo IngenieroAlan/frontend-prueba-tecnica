@@ -4,7 +4,6 @@ import { useRoute } from "vue-router";
 import baseUrl from "../../../api/api";
 import UserInfoCard from "../../../components/UserInfoCard.vue";
 import router from "../../../router";
-import "./styles.css";
 
 const route = useRoute();
 
@@ -77,7 +76,10 @@ const goBack = async () => {
 </script>
 <template>
   <el-container class="container">
-    <el-header class="header">
+    <el-header
+      class="header"
+      style="text-align: left"
+    >
       <el-button
         link
         @click="goBack"
@@ -88,7 +90,7 @@ const goBack = async () => {
       <UserInfoCard :user="user" />
       <el-table
         :data="contacts"
-        class="table"
+        width="100%"
         empty-text="El usuario no tiene contactos"
         v-loading="isLoading"
       >
