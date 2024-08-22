@@ -1,11 +1,10 @@
 <script setup>
-import { reactive, ref } from "vue";
-import { ElButton, ElContainer } from "element-plus";
+import { reactive } from "vue";
+import { ElButton, ElContainer, ElMessage } from "element-plus";
+import "element-plus/es/components/message/style/css";
 import router from "../../router";
 import "./styles.css";
 import baseUrl from "../../api/api";
-
-const errorMessage = ref(""); //TODO: add validations
 
 if (localStorage.getItem("token")) {
   router.replace("/home");
@@ -33,7 +32,7 @@ const onSubmit = async () => {
       localStorage.setItem("token", data.token);
       router.replace("/home");
     } else {
-      errorMessage.value = "Error, las credenciales son incorrectas";
+      ElMessage.error("Error, las credenciales son incorrectas");
     }
   } catch (error) {
     console.log(error);
