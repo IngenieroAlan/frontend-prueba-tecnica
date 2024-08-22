@@ -1,41 +1,55 @@
 <template>
-  <el-card>
-    <h1>{{ isEditMode ? "Editar Usuario" : "Agregar Usuario" }}</h1>
-    <el-form
-      :model="user"
-      :rules="rules"
-      ref="userForm"
+  <el-container>
+    <el-header
+      class="header"
+      style="text-align: left"
     >
-      <el-form-item
-        label="Nombre de usuario"
-        prop="username"
-      >
-        <el-input
-          v-model="user.userName"
-          placeholder="Nombre de usuario"
-        ></el-input>
-      </el-form-item>
-      <el-form-item
-        label="Correo electronico"
-        prop="email"
-      >
-        <el-input
-          v-model="user.email"
-          placeholder="Correo electronico"
-          type="email"
-        ></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button
-          type="primary"
-          @click="submit"
+      <el-button
+        link
+        @click="goBack"
+        ><el-icon size="38px"><Back /> </el-icon
+      ></el-button>
+    </el-header>
+    <el-main class="content">
+      <el-card>
+        <h1>{{ isEditMode ? "Editar Usuario" : "Agregar Usuario" }}</h1>
+        <el-form
+          :model="user"
+          :rules="rules"
+          ref="userForm"
         >
-          {{ isEditMode ? "Guardar Cambios" : "Agregar Usuario" }}
-        </el-button>
-        <el-button @click="resetForm">Resetear</el-button>
-      </el-form-item>
-    </el-form>
-  </el-card>
+          <el-form-item
+            label="Nombre de usuario"
+            prop="username"
+          >
+            <el-input
+              v-model="user.userName"
+              placeholder="Nombre de usuario"
+            ></el-input>
+          </el-form-item>
+          <el-form-item
+            label="Correo electronico"
+            prop="email"
+          >
+            <el-input
+              v-model="user.email"
+              placeholder="Correo electronico"
+              type="email"
+            ></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button
+              type="primary"
+              @click="submit"
+            >
+              {{ isEditMode ? "Guardar Cambios" : "Agregar Usuario" }}
+            </el-button>
+            <el-button @click="resetForm">Resetear</el-button>
+          </el-form-item>
+        </el-form>
+      </el-card>
+    </el-main>
+  </el-container>
 </template>
 
 <script setup>
@@ -89,6 +103,10 @@ const getUser = async (id) => {
       console.error(error);
     }
   }
+};
+
+const goBack = async () => {
+  router.replace("/home");
 };
 
 const submit = () => {
