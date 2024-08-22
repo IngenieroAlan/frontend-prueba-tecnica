@@ -7,8 +7,9 @@
       <el-button
         link
         @click="goBack"
-        ><el-icon size="38px"><Back /> </el-icon
-      ></el-button>
+      >
+        <el-icon size="38px"><Back /></el-icon>
+      </el-button>
     </el-header>
     <el-main class="content">
       <el-card>
@@ -69,7 +70,7 @@ const user = ref({
 });
 
 const rules = {
-  name: [
+  userName: [
     { required: true, message: "El nombre es obligatorio", trigger: "blur" },
   ],
   email: [
@@ -80,11 +81,8 @@ const rules = {
 
 const userForm = ref(null);
 
-//Dependiendo de si se obtiene un 'id' de las props de la ruta el valor de 'isEditMode'
-//sera 'true' o 'false'
 const isEditMode = computed(() => !!route.params.id);
 
-//Obtenemos la info del usuario en caso de que se quiera editar
 const getUser = async (id) => {
   if (isEditMode.value) {
     try {
@@ -97,7 +95,6 @@ const getUser = async (id) => {
       const data = await resp.json();
       if (data.isSuccess) {
         user.value = data.data;
-        console.log(user.value);
       }
     } catch (error) {
       console.error(error);
@@ -149,6 +146,7 @@ const submit = () => {
 const resetForm = () => {
   userForm.value.resetFields();
 };
+
 onMounted(() => {
   getUser(route.params.id);
 });

@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 import baseUrl from "../../../api/api";
 import UserInfoCard from "../../../components/UserInfoCard.vue";
@@ -8,7 +8,7 @@ import router from "../../../router";
 const route = useRoute();
 
 const contacts = ref();
-const user = ref();
+const user = ref(null);
 const isLoading = ref(true);
 
 const getContacts = async (userId) => {
@@ -46,8 +46,7 @@ const getUser = async (id) => {
     console.error(error);
   }
 };
-getContacts(route.params.id);
-getUser(route.params.id);
+
 const handleDelete = async (id) => {
   isLoading.value = true;
   try {
@@ -68,11 +67,21 @@ const handleEdit = (id) => {
   router.replace(`/contact/edit/${id}`);
 };
 const handleAdd = async () => {
-  router.replace("/contact/add");
+  router.replace(`/contact/add/${user.value.id}`);
 };
 const goBack = async () => {
   router.replace("/home");
 };
+onMounted(() => {
+  if (route.params.id) {
+    getContacts(route.params.id);
+    getUser(route.params.id);
+  }
+});
+if (user.value != null) {
+  getUser(route.params.id);
+  getContacts(route.params.id);
+}
 </script>
 <template>
   <el-container class="container">
@@ -87,65 +96,68 @@ const goBack = async () => {
       ></el-button>
     </el-header>
     <el-main class="content">
-      <UserInfoCard :user="user" />
-      <el-table
-        :data="contacts"
-        width="100%"
-        empty-text="El usuario no tiene contactos"
-        v-loading="isLoading"
-      >
-        <el-table-column
-          fixed
-          prop="name"
-          label="Nombre"
-          min-width="60"
-        />
-        <el-table-column
-          prop="email"
-          label="Correo electronico"
-          min-width="60"
-        />
-        <el-table-column
-          prop="phoneNumber"
-          label="Telefono"
-          min-width="60"
-        />
-        <el-table-column
-          prop="address"
-          label="Referencia"
-          min-width="60"
-        />
-        <el-table-column
-          fixed="right"
-          label="Acciones"
-          min-width="80"
+      <el-card>
+        <UserInfoCard :user="user" />
+        <h3>Contactos</h3>
+        <el-table
+          :data="contacts"
+          width="100%"
+          empty-text="El usuario no tiene contactos"
+          v-loading="isLoading"
         >
-          <template #default="{ row }">
-            <el-button
-              link
-              type="primary"
-              size="small"
-              @click="handleEdit(row.id)"
-              >Editar</el-button
-            >
-            <el-button
-              link
-              type="danger"
-              size="small"
-              @click="handleDelete(row.id)"
-            >
-              Eliminar
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <el-button
-        style="width: 100%"
-        class="btnAddContact"
-        @click="handleAdd"
-      >
-        Agregar contacto
-      </el-button>
+          <el-table-column
+            fixed
+            prop="name"
+            label="Nombre"
+            min-width="60"
+          />
+          <el-table-column
+            prop="email"
+            label="Correo electronico"
+            min-width="60"
+          />
+          <el-table-column
+            prop="phoneNumber"
+            label="Telefono"
+            min-width="60"
+          />
+          <el-table-column
+            prop="address"
+            label="Referencia"
+            min-width="60"
+          />
+          <el-table-column
+            fixed="right"
+            label="Acciones"
+            min-width="80"
+          >
+            <template #default="{ row }">
+              <el-button
+                link
+                type="primary"
+                size="small"
+                @click="handleEdit(row.id)"
+                >Editar</el-button
+              >
+              <el-button
+                link
+                type="danger"
+                size="small"
+                @click="handleDelete(row.id)"
+              >
+                Eliminar
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        <el-button
+          style="width: 100%"
+          class="btnAddContact"
+          @click="handleAdd"
+        >
+          Agregar contacto
+        </el-button>
+      </el-card>
     </el-main>
   </el-container>
 </template>

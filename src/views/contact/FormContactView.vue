@@ -7,8 +7,9 @@
       <el-button
         link
         @click="goBack"
-        ><el-icon size="38px"><Back /> </el-icon
-      ></el-button>
+      >
+        <el-icon size="38px"><Back /></el-icon>
+      </el-button>
     </el-header>
     <el-main class="content">
       <el-card>
@@ -27,7 +28,6 @@
               placeholder="Nombre del contacto"
             ></el-input>
           </el-form-item>
-
           <el-form-item
             label="Correo electrónico"
             prop="email"
@@ -38,7 +38,6 @@
               type="email"
             ></el-input>
           </el-form-item>
-
           <el-form-item
             label="Número de teléfono"
             prop="phoneNumber"
@@ -48,7 +47,6 @@
               placeholder="Número de teléfono"
             ></el-input>
           </el-form-item>
-
           <el-form-item
             label="Dirección"
             prop="address"
@@ -58,7 +56,6 @@
               placeholder="Dirección"
             ></el-input>
           </el-form-item>
-
           <el-form-item>
             <el-button
               type="primary"
@@ -78,7 +75,6 @@
 import { ref, computed, onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
-import "element-plus/es/components/message/style/css";
 import baseUrl from "../../api/api";
 
 const route = useRoute();
@@ -90,7 +86,7 @@ const contact = ref({
   phoneNumber: "",
   address: "",
 });
-const userId = ref();
+const userId = ref(route.params.userId); // Obtén userId desde los parámetros de la ruta
 
 const rules = {
   name: [
@@ -100,7 +96,7 @@ const rules = {
     { required: true, message: "El correo es obligatorio", trigger: "blur" },
     { type: "email", message: "El correo no es válido", trigger: "blur" },
   ],
-  phone: [
+  phoneNumber: [
     {
       required: true,
       message: "El número de teléfono es obligatorio",
@@ -113,12 +109,8 @@ const rules = {
 };
 
 const contactForm = ref(null);
-
-//Dependiendo de si se obtiene un 'id' de las props de la ruta el valor de 'isEditMode'
-//sera 'true' o 'false'
 const isEditMode = computed(() => !!route.params.id);
 
-//Obtenemos la info del usuario en caso de que se quiera editar
 const getContact = async (id) => {
   if (isEditMode.value) {
     try {
@@ -128,8 +120,7 @@ const getContact = async (id) => {
       const data = await resp.json();
       if (resp.ok) {
         contact.value = data;
-        userId.value = data.userId;
-        console.log(contact.value);
+        userId.value = data.userId; // Establecer userId desde el contacto
       } else {
         throw new Error(
           data.message || "Error al cargar los datos del contacto"
@@ -162,7 +153,7 @@ const submit = () => {
               "Content-Type": "application/json",
               Authorization: "Bearer " + localStorage.getItem("token"),
             },
-            body: JSON.stringify({ userId: userId, ...contact.value }),
+            body: JSON.stringify({ userId: userId.value, ...contact.value }),
           });
         }
         ElMessage.success("Operación realizada con éxito");
@@ -180,8 +171,9 @@ const submit = () => {
 const resetForm = () => {
   contactForm.value.resetFields();
 };
+
 const goBack = async () => {
-  router.replace(`/user/${contact.value.userId}`);
+  router.replace(`/user/${userId.value}`);
 };
 
 onMounted(() => {

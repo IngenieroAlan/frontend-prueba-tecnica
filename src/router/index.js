@@ -16,7 +16,12 @@ const routes = [
     component: FormUserView,
     props: true,
   },
-  { path: "/contact/add", name: "addContact", component: FormContactView },
+  {
+    path: "/contact/add/:userId",
+    name: "addContact",
+    component: FormContactView,
+    props: true,
+  },
   {
     path: "/contact/edit/:id",
     name: "editContact",
