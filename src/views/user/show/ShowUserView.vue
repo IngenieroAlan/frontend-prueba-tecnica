@@ -1,8 +1,8 @@
 <script setup>
 import { ref } from "vue";
+import { useRoute } from "vue-router";
 import baseUrl from "../../../api/api";
 import UserInfoCard from "../../../components/UserInfoCard.vue";
-import { useRoute } from "vue-router";
 import router from "../../../router";
 import "./styles.css";
 
@@ -12,20 +12,18 @@ const contacts = ref();
 const user = ref();
 const isLoading = ref(true);
 
-const getContacts = async (id) => {
+const getContacts = async (userId) => {
   isLoading.value = true;
   try {
-    const resp = await fetch(baseUrl + `/Contact/user/${id}`, {
+    const resp = await fetch(baseUrl + `/Contact/user/${userId}`, {
       method: "GET",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
       },
     });
     const data = await resp.json();
-    console.log(data);
     if (data.isSuccess) {
       contacts.value = data.data;
-      console.log(contacts.value);
       isLoading.value = false;
     }
   } catch (error) {
@@ -34,7 +32,6 @@ const getContacts = async (id) => {
   }
 };
 const getUser = async (id) => {
-  //TODO:Ruta para obtener los contactos dependiendo del id del usuario
   try {
     const resp = await fetch(baseUrl + `/user/${id}`, {
       method: "GET",
@@ -52,10 +49,10 @@ const getUser = async (id) => {
 };
 getContacts(route.params.id);
 getUser(route.params.id);
-const handleDelete = async (userId) => {
+const handleDelete = async (id) => {
   isLoading.value = true;
   try {
-    await fetch(baseUrl + `/Contact/${userId}`, {
+    await fetch(baseUrl + `/Contact/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: "Bearer " + localStorage.getItem("token"),
@@ -68,8 +65,8 @@ const handleDelete = async (userId) => {
     console.error(error);
   }
 };
-const handleEdit = (userId) => {
-  console.log(userId);
+const handleEdit = (id) => {
+  router.replace(`/contact/edit/${id}`);
 };
 const handleAdd = async () => {
   router.replace("/contact/add");
@@ -127,7 +124,7 @@ const goBack = async () => {
               type="primary"
               size="small"
               @click="handleEdit(row.id)"
-              >Edit</el-button
+              >Editar</el-button
             >
             <el-button
               link
@@ -135,7 +132,7 @@ const goBack = async () => {
               size="small"
               @click="handleDelete(row.id)"
             >
-              Delete
+              Eliminar
             </el-button>
           </template>
         </el-table-column>

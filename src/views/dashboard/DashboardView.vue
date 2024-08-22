@@ -31,7 +31,7 @@ const handleDetails = (userId) => {
   router.replace(`/user/${userId}`);
 };
 const handleEdit = (userId) => {
-  console.log(userId);
+  router.replace(`/user/edit/${userId}`);
 };
 const handleDelete = async (userId) => {
   isLoading.value = true;
