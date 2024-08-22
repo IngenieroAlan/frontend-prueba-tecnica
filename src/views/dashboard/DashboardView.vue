@@ -6,9 +6,6 @@ import router from "../../router";
 
 const users = ref();
 const isLoading = ref(true);
-onMounted(() => {
-  isLoading.value = true;
-});
 
 const getUsers = async () => {
   try {
@@ -57,7 +54,10 @@ const handleLogout = () => {
   localStorage.clear();
   router.replace("/");
 };
-getUsers();
+onMounted(() => {
+  isLoading.value = true;
+  getUsers();
+});
 </script>
 <template>
   <el-container class="container">
